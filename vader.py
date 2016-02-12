@@ -9,6 +9,7 @@ class Vader:
 
     client = None
     token = "xoxb-16470487171-NEqcYbtwqYrDWeXktwbWVUho"
+    channel = "general"
     commands = {"!ud": commands.urban_dictionary}
 
     def __init__(self):
@@ -32,7 +33,7 @@ class Vader:
                     return
                 for k, v in self.commands.items():
                     if split[0] == k:
-                        v(self.client, split[1:])
+                        v(self.client, self.channel, split[1:])
         except KeyError:
             pass
 
