@@ -9,14 +9,23 @@ class Vader:
 
     client = None
     token = "xoxb-16470487171-NEqcYbtwqYrDWeXktwbWVUho"
-    channel = "general"
-    commands = {"!ud": commands.urban_dictionary}
+    channel = None
+    channel_name = "general"
+    commands = {
+        "!ud": commands.urban_dictionary,
+        "!scream": commands.scream,
+        "!SCREAM": commands.scream_loud
+    }
 
     def __init__(self):
         self.client = SlackClient(self.token)
 
     def connect(self):
         self.client.rtm_connect()
+        try:
+            self.channel = next(channel for channel in self.client.server.channels if channel.name == self.channel_name)
+        except StopIteration:
+            raise Exception("Could not channel #{}".format(self.channel_name))
         while True:
             events = self.client.rtm_read()
             for event in events:
@@ -33,7 +42,7 @@ class Vader:
                     return
                 for k, v in self.commands.items():
                     if split[0] == k:
-                        v(self.client, self.channel, split[1:])
+                        v(self.channel, split[1:])
         except KeyError:
             pass
 
