@@ -15,18 +15,14 @@ def urban_dictionary(channel, params):
 
 
 def scream(channel, params):
-    channel.send_message("B{}{}{}{}{}".format(
-                         randint(1, 4) * "W",
-                         randint(1, 8) * "A",
-                         randint(1, 8) * "U",
-                         randint(1, 8) * "G",
-                         randint(1, 4) * "H"))
+    word = " ".join(params)
+    if word == "":
+        word = "BWAUGH"
+    channel.send_message((lambda w: w[0] + "".join(c * randint(1, 8) for c in word[1:]))(word))
 
 
 def scream_loud(channel, params):
-    channel.send_message("B{}{}{}{}{}".format(
-                         randint(1, 8) * "W",
-                         randint(1, 16) * "A",
-                         randint(1, 16) * "U",
-                         randint(1, 16) * "G",
-                         randint(1, 8) * "H"))
+    word = " ".join(params)
+    if word == "":
+        word = "BWAUGH"
+    channel.send_message((lambda w: w[0] + "".join(c * randint(1, 16) for c in word[1:]))(word))
