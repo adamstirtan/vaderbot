@@ -10,10 +10,12 @@ class Vader:
     token = "xoxb-16470487171-NEqcYbtwqYrDWeXktwbWVUho"
 
     def __init__(self):
+        print("Bot is starting up")
         self.client = SlackClient(self.token)
 
 
     def connect(self):
+        print("Connecting to Slack")
         self.client.rtm_connect()
         while True:
             events = self.client.rtm_read()
@@ -23,6 +25,7 @@ class Vader:
 
 
     def process_event(self, event):
+        print("Event: {}".format(event))
         try:
             if event["type"] == "message":
                 print(event["text"])
