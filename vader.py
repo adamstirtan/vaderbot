@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 import time
-import commands
+from commands.urban_dictionary import urban_dictionary
+from commands.scream import scream
+from commands.scream_loud import scream_loud
 from slackclient import SlackClient
 
 
@@ -12,9 +14,9 @@ class Vader:
     channel = None
     channel_name = "general"
     commands = {
-        "!ud": commands.urban_dictionary,
-        "!scream": commands.scream,
-        "!SCREAM": commands.scream_loud
+        "!ud": urban_dictionary,
+        "!scream": scream,
+        "!SCREAM": scream_loud
     }
 
     def __init__(self):
@@ -33,7 +35,6 @@ class Vader:
             time.sleep(1)
 
     def process_event(self, event):
-        print("Event: {}".format(event))
         try:
             if event["type"] == "message":
                 message_text = event["text"]
