@@ -11,7 +11,6 @@ def urban_dictionary(channel, params):
     data = json.loads(response.text)
 
     if data and data["list"] and len(data["list"]) > 0:
-        link = data["list"][0]["permalink"]
-        channel.send_message(link)
+        channel.send_message(data["list"][0]["permalink"])
     else:
         channel.send_message("Nothing found for {}".format(query))

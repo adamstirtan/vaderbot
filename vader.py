@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import sys
 import time
 from commands.urban_dictionary import urban_dictionary
 from commands.scream import scream
@@ -44,7 +45,8 @@ class Vader:
                 for k, v in self.commands.items():
                     if split[0] == k:
                         v(self.channel, split[1:])
-        except KeyError:
+        except KeyError as e:
+            print(e, file=sys.stderr)
             pass
 
 
