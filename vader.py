@@ -46,7 +46,7 @@ class Vader:
                     if split[0] == k:
                         v(self.channel, split[1:])
         except KeyError as e:
-            print(e, file=sys.stderr)
+            print(str(e), file=sys.stderr)
             pass
 
 
