@@ -10,8 +10,6 @@ class Vader:
 
     client = None
     token = "xoxb-16470487171-NEqcYbtwqYrDWeXktwbWVUho"
-    channel = None
-    channel_name = "general"
     commands = {
         "!ud": urban_dictionary,
         "!scream": scream,
@@ -24,11 +22,6 @@ class Vader:
     def connect(self):
         self.client.rtm_connect()
 
-        try:
-            self.channel = next(channel for channel in self.client.server.channels if channel.name == self.channel_name)
-        except StopIteration:
-            raise Exception("Could not channel #{}".format(self.channel_name))
-
         while True:
             events = self.client.rtm_read()
 
@@ -40,13 +33,14 @@ class Vader:
         try:
             if event["type"] == "message":
                 split = event["text"].split()
+                channel = next(channel for channel in self.client.server.channels if channel.id == event["channel"])
 
                 if len(split) == 0:
                     return
 
                 for k, v in self.commands.items():
                     if split[0] == k:
-                        v(self.channel, split[1:])
+                        v(channel, split[1:])
 
         except KeyError as e:
             print(str(e), file=sys.stderr)
