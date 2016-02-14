@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import sys
 import time
 from commands.urban_dictionary import urban_dictionary
@@ -48,6 +46,3 @@ class Vader:
         except KeyError as e:
             print(str(e), file=sys.stderr)
             pass
-
-
-Vader().connect()
