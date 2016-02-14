@@ -7,7 +7,7 @@ def count(database, channel, params):
 
     if query == "messages":
         result = __count_messages__(database)
-        channel.send_message("There are {} messages is the database".format(result))
+        channel.send_message("There are {} messages in my database".format(result))
 
 
 def __count_messages__(database):
