@@ -1,4 +1,4 @@
-def urban_dictionary(channel, params):
+def urban_dictionary(database, channel, params):
     import requests
     import json
 

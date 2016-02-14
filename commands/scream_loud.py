@@ -1,4 +1,4 @@
-def scream_loud(channel, params):
+def scream_loud(database, channel, params):
     import random
 
     word = " ".join(params)

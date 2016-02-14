@@ -2,9 +2,10 @@ import sys
 import time
 from slackclient import SlackClient
 from database.databaseclient import DatabaseClient
-from commands.urban_dictionary import urban_dictionary
+from commands.count import count
 from commands.scream import scream
 from commands.scream_loud import scream_loud
+from commands.urban_dictionary import urban_dictionary
 
 
 class Vader:
@@ -13,9 +14,10 @@ class Vader:
     database = None
     token = "xoxb-16470487171-NEqcYbtwqYrDWeXktwbWVUho"
     commands = {
-        "!ud": urban_dictionary,
+        "!count": count,
         "!scream": scream,
-        "!SCREAM": scream_loud
+        "!SCREAM": scream_loud,
+        "!ud": urban_dictionary
     }
 
     def __init__(self):
@@ -36,16 +38,20 @@ class Vader:
     def process_event(self, event):
         try:
             if event["type"] == "message":
-                message = event["text"].split()
+                message = event["text"]
                 channel = next(channel for channel in self.client.server.channels if channel.id == event["channel"])
+                user = next(user for user in self.client.server.users if user.id == event["user"])
 
-                if len(message) == 0:
+                if message[0] != "!" and user.name != "vader":
+                    self.database.add_message(user.name, message)
                     return
 
+                command = message.split()[0]
+
                 for k, v in self.commands.items():
-                    if message[0] == k:
-                        v(channel, message[1:])
+                    if command == k:
+                        v(self.database, channel, message.split()[1:])
+                        break
 
         except KeyError as e:
             print(str(e), file=sys.stderr)
-            pass
