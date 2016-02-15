@@ -5,6 +5,7 @@ from datetime import datetime
 from slackclient import SlackClient
 from database.databaseclient import DatabaseClient
 from commands.add_quote import add_quote
+from commands.aol_say import aol_say
 from commands.count import count
 from commands.quote import quote
 from commands.scream import scream
@@ -19,6 +20,7 @@ class Vader:
     token = "xoxb-16470487171-NEqcYbtwqYrDWeXktwbWVUho"
     commands = {
         "!addquote": add_quote,
+        "!aolsay": aol_say,
         "!count": count,
         "!quote": quote,
         "!scream": scream,
@@ -60,7 +62,7 @@ class Vader:
                         break
 
         except KeyError as e:
-            print(str(e), file=sys.stderr)
+            pass
 
     def add_message(self, user, message):
         db = self.database.open()
