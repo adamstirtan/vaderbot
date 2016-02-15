@@ -12,8 +12,10 @@ def count(database, channel, params):
 
 def __count_messages__(database):
     db = database.open()
-    cursor = db.cursor()
 
+    cursor = db.cursor()
     result = cursor.execute('''SELECT count(id) FROM messages''').fetchone()
+
+    db.close()
 
     return int(result[0])

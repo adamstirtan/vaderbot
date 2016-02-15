@@ -1,5 +1,4 @@
 import sqlite3
-from datetime import datetime
 
 
 class DatabaseClient:
@@ -30,27 +29,3 @@ class DatabaseClient:
 
     def open(self):
         return sqlite3.connect(self.db_file, detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
-
-    def add_message(self, user, message):
-        db = self.open()
-
-        cursor = db.cursor()
-        cursor.execute('''INSERT INTO messages (user, message, message_time) VALUES (?, ?, ?)''',
-                       (user, message, datetime.now()))
-
-        db.commit()
-        db.close()
-
-        return cursor.lastrowid
-
-    def add_quote(self, quote):
-        db = self.open()
-
-        cursor = db.cursor()
-        cursor.execute('''INSERT INTO quotes (quote, quote_time, points) VALUES (?, ?, ?)''',
-                       (quote, datetime.now(), 0))
-
-        db.commit()
-        db.close()
-
-        return cursor.lastrowid

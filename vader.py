@@ -1,9 +1,12 @@
 import sys
 import time
+
+from datetime import datetime
 from slackclient import SlackClient
 from database.databaseclient import DatabaseClient
 from commands.add_quote import add_quote
 from commands.count import count
+from commands.quote import quote
 from commands.scream import scream
 from commands.scream_loud import scream_loud
 from commands.urban_dictionary import urban_dictionary
@@ -17,6 +20,7 @@ class Vader:
     commands = {
         "!addquote": add_quote,
         "!count": count,
+        "!quote": quote,
         "!scream": scream,
         "!SCREAM": scream_loud,
         "!ud": urban_dictionary
@@ -45,7 +49,7 @@ class Vader:
                 user = next(user for user in self.client.server.users if user.id == event["user"])
 
                 if message[0] != "!" and user.name != "vader":
-                    self.database.add_message(user.name, message)
+                    self.add_message(user.name, message)
                     return
 
                 command = message.split()[0]
@@ -57,3 +61,13 @@ class Vader:
 
         except KeyError as e:
             print(str(e), file=sys.stderr)
+
+    def add_message(self, user, message):
+        db = self.database.open()
+
+        cursor = db.cursor()
+        cursor.execute('''INSERT INTO messages (user, message, message_time) VALUES (?, ?, ?)''',
+                       (user, message, datetime.now()))
+
+        db.commit()
+        db.close()
