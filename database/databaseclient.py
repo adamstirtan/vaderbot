@@ -21,9 +21,9 @@ class DatabaseClient:
 
         cursor.execute('''CREATE TABLE IF NOT EXISTS quotes (
             id INTEGER PRIMARY KEY,
-            user TEXT,
             quote TEXT,
-            quote_time DATE)''')
+            quote_time DATE,
+            points INTEGER)''')
 
         db.commit()
         db.close()
@@ -33,10 +33,24 @@ class DatabaseClient:
 
     def add_message(self, user, message):
         db = self.open()
-        cursor = db.cursor()
 
+        cursor = db.cursor()
         cursor.execute('''INSERT INTO messages (user, message, message_time) VALUES (?, ?, ?)''',
                        (user, message, datetime.now()))
 
         db.commit()
         db.close()
+
+        return cursor.lastrowid
+
+    def add_quote(self, quote):
+        db = self.open()
+
+        cursor = db.cursor()
+        cursor.execute('''INSERT INTO quotes (quote, quote_time, points) VALUES (?, ?, ?)''',
+                       (quote, datetime.now(), 0))
+
+        db.commit()
+        db.close()
+
+        return cursor.lastrowid

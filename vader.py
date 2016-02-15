@@ -2,6 +2,7 @@ import sys
 import time
 from slackclient import SlackClient
 from database.databaseclient import DatabaseClient
+from commands.add_quote import add_quote
 from commands.count import count
 from commands.scream import scream
 from commands.scream_loud import scream_loud
@@ -14,6 +15,7 @@ class Vader:
     database = None
     token = "xoxb-16470487171-NEqcYbtwqYrDWeXktwbWVUho"
     commands = {
+        "!addquote": add_quote,
         "!count": count,
         "!scream": scream,
         "!SCREAM": scream_loud,
