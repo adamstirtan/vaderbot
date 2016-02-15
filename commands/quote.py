@@ -16,7 +16,10 @@ def __random_quote__(database, channel):
 
     db.close()
 
-    channel.send_message("({}) {}".format(result[0], result[1]))
+    if result:
+        channel.send_message("({}) {}".format(result[0], result[1]))
+    else:
+        channel.send_message("There are no quotes yet.")
 
 
 def __id_quote__(database, channel, quote_id):
