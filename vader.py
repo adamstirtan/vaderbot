@@ -29,13 +29,6 @@ class Vader:
     def __init__(self):
         self.client = SlackClient(self.token)
         self.database = DatabaseClient()
-        self.import_quotes()
-
-    def import_quotes(self):
-        with open("quotes.txt") as f:
-            quotes = f.readlines()
-            for q in quotes:
-                add_quote(self.database, None, q)
 
     def connect(self):
         self.client.rtm_connect()
