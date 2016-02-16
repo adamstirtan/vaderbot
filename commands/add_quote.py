@@ -8,14 +8,6 @@ def add_quote(database, channel, params):
 
     message = " ".join(params)
 
-    db = database.open()
+    result = database.insert("quotes", (message, datetime.now(), 0))
 
-    cursor = db.cursor()
-    cursor.execute(
-        '''INSERT INTO quotes (quote, quote_time, points) VALUES (?, ?, ?)''',
-        (message, datetime.now(), 0))
-
-    db.commit()
-    db.close()
-
-    channel.send_message("Bleep bloop! Quote number {} added.".format(cursor.lastrowid))
+    channel.send_message("Bleep bloop! Quote number {} added.".format(result))
