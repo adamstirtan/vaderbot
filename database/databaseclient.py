@@ -52,7 +52,7 @@ class DatabaseClient:
         try:
             connection = self.open()
             cursor = connection.execute("SELECT * FROM {}".format(table))
-            columns = ", ".join([description[0] for description in cursor.description]).replace("id, ", "")
+            columns = ", ".join(description[0] for description in cursor.description[1:])
 
             cursor.execute("INSERT INTO {} ({}) VALUES ({})"
                            .format(table, columns, ", ".join((columns.count(",") + 1) * "?")), entity)
