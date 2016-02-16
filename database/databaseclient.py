@@ -1,32 +1,82 @@
 import sqlite3
 
+from os import listdir
+from os.path import isfile, join
+
 
 class DatabaseClient:
 
     db_file = "database/bot.db"
 
     def __init__(self):
-        self.__initialize_tables__()
+        self.__upgrade_database__()
 
-    def __initialize_tables__(self):
-        db = self.open()
+    def __upgrade_database__(self):
+        migrations = self.__get_migrations__()
+        schema_version = self.__get_schema_version__()
 
-        cursor = db.cursor()
+        for migration in migrations[schema_version:]:
+            version = migration[0]
+            statements = [s.strip() for s in migration[1].splitlines()]
 
-        cursor.execute('''CREATE TABLE IF NOT EXISTS messages (
-            id INTEGER PRIMARY KEY,
-            user TEXT,
-            message TEXT,
-            message_time DATE)''')
+            for statement in statements:
+                self.__perform_upgrade__(statement)
 
-        cursor.execute('''CREATE TABLE IF NOT EXISTS quotes (
-            id INTEGER PRIMARY KEY,
-            quote TEXT,
-            quote_time DATE,
-            points INTEGER)''')
+            self.__set_schema_version__(version)
 
-        db.commit()
-        db.close()
+    @staticmethod
+    def __get_migrations__():
+        migrations_path = "database/migrations/"
+        migrations =\
+            [file for file in listdir(migrations_path) if isfile(join(migrations_path, file)) and file.endswith(".sql")]
+
+        result = []
+        for i in range(len(migrations)):
+            result.append((i + 1, open(migrations_path + migrations[i]).read()))
+
+        return result
+
+    def __perform_upgrade__(self, statement):
+        connection = None
+
+        try:
+            connection = self.open()
+            cursor = connection.cursor()
+
+            cursor.execute(statement)
+
+            connection.commit()
+        finally:
+            if connection:
+                connection.close()
+
+    def __get_schema_version__(self):
+        connection = None
+
+        try:
+            connection = self.open()
+            cursor = connection.cursor()
+
+            result = cursor.execute("PRAGMA user_version").fetchone()[0]
+        finally:
+            if connection:
+                connection.close()
+
+        return result
+
+    def __set_schema_version__(self, version):
+        connection = None
+
+        try:
+            connection = self.open()
+            cursor = connection.cursor()
+
+            cursor.execute("PRAGMA user_version = {}".format(version))
+
+            connection.commit()
+        finally:
+            if connection:
+                connection.close()
 
     def open(self):
         return sqlite3.connect(self.db_file)

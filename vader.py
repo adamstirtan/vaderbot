@@ -50,7 +50,7 @@ class Vader:
                 user = next(user for user in self.client.server.users if user.id == event["user"])
 
                 if message[0] != "!" and user.name != "vader":
-                    self.add_message(user.name, message)
+                    self.database.insert("messages", (user, message, datetime.now()))
                     return
 
                 command = message.split()[0]
@@ -60,15 +60,5 @@ class Vader:
                         v(self.database, channel, message.split()[1:])
                         break
 
-        except KeyError as e:
+        except KeyError:
             pass
-
-    def add_message(self, user, message):
-        db = self.database.open()
-
-        cursor = db.cursor()
-        cursor.execute('''INSERT INTO messages (user, message, message_time) VALUES (?, ?, ?)''',
-                       (user, message, datetime.now()))
-
-        db.commit()
-        db.close()

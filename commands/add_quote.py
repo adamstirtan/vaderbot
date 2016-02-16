@@ -1,6 +1,3 @@
-from datetime import datetime
-
-
 def add_quote(database, channel, params):
     if len(params) == 0:
         channel.send_message("Usage: !addquote [message]")
@@ -8,6 +5,6 @@ def add_quote(database, channel, params):
 
     message = " ".join(params)
 
-    result = database.insert("quotes", (message, datetime.now(), 0))
+    result = database.insert("quotes", (message, 0))
 
     channel.send_message("Bleep bloop! Quote number {} added.".format(result))
