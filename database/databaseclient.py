@@ -28,7 +28,7 @@ class DatabaseClient:
     def __get_migrations__():
         migrations_path = "database/migrations/"
         migrations =\
-            [file for file in listdir(migrations_path) if isfile(join(migrations_path, file)) and file.endswith(".sql")]
+            sorted([file for file in listdir(migrations_path) if isfile(join(migrations_path, file)) and file.endswith(".sql")])
 
         result = []
         for i in range(len(migrations)):
