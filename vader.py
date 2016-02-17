@@ -50,7 +50,7 @@ class Vader:
                 user = next(user for user in self.client.server.users if user.id == event["user"])
 
                 if message[0] != "!" and user.name != "vader":
-                    self.database.insert("messages", (user, message, datetime.now()))
+                    self.database.insert("messages", (user.name, message, datetime.now()))
                     return
 
                 command, *params = message.split()

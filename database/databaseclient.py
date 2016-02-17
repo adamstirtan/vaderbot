@@ -46,8 +46,6 @@ class DatabaseClient:
             cursor.execute(statement)
 
             connection.commit()
-        except sqlite3.OperationalError as e:
-            print(e)
         finally:
             if connection:
                 connection.close()
