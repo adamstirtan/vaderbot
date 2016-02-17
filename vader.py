@@ -5,6 +5,7 @@ from slackclient import SlackClient
 from database.databaseclient import DatabaseClient
 from commands.add_quote import add_quote
 from commands.aol_say import aol_say
+from commands.convert import convert
 from commands.count import count
 from commands.quote import quote
 from commands.scream import scream
@@ -21,6 +22,7 @@ class Vader:
         "!addquote": add_quote,
         "!aolsay": aol_say,
         "!count": count,
+        "!convert": convert,
         "!quote": quote,
         "!scream": scream,
         "!SCREAM": scream_loud,
