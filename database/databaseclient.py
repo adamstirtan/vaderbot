@@ -32,7 +32,7 @@ class DatabaseClient:
 
         result = []
         for i in range(len(migrations)):
-            result.append((i + 1, open(migrations_path + migrations[i]).read()))
+            result.append((i + 1, open(migrations_path + migrations[i], encoding="utf8").read()))
 
         return result
 
@@ -46,6 +46,8 @@ class DatabaseClient:
             cursor.execute(statement)
 
             connection.commit()
+        except sqlite3.OperationalError as e:
+            print(e)
         finally:
             if connection:
                 connection.close()
