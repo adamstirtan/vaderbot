@@ -57,6 +57,10 @@ class Vader:
 
                 command = message.split()[0]
 
+                if user.name == "mastadonn" and (command == "!scream" or command == "!SCREAM"):
+                    channel.send_message("http://i.giphy.com/uOAXDA7ZeJJzW.gif")
+                    return
+
                 for k, v in self.commands.items():
                     if command == k:
                         v(self.database, channel, message.split()[1:])
