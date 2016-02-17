@@ -53,12 +53,10 @@ class Vader:
                     self.database.insert("messages", (user, message, datetime.now()))
                     return
 
-                command = message.split()[0]
+                command, *params = message.split()
 
-                for k, v in self.commands.items():
-                    if command == k:
-                        v(self.database, channel, message.split()[1:])
-                        break
+                if command in self.commands:
+                    self.commands[command](self.database, channel, params)
 
         except KeyError:
             pass
