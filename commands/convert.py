@@ -2,7 +2,7 @@ import json
 import requests
 
 def convert(database, channel, params):
-    if not len(params) == 0:
+    if len(params) == 3:
         source = params[0]
         dest = params[1]
         amount = float(params[2])
