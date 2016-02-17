@@ -21,8 +21,8 @@ class Vader:
     commands = {
         "!addquote": add_quote,
         "!aolsay": aol_say,
-        "!count": count,
         "!convert": convert,
+        "!count": count,
         "!quote": quote,
         "!scream": scream,
         "!SCREAM": scream_loud,
