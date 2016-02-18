@@ -7,6 +7,7 @@ from os.path import isfile, join
 class DatabaseClient:
 
     db_file = "database/bot.db"
+    migrations_path = "database/migrations/"
 
     def __init__(self):
         self.__upgrade_database__()
@@ -24,15 +25,13 @@ class DatabaseClient:
 
             self.__set_schema_version__(version)
 
-    @staticmethod
-    def __get_migrations__():
-        migrations_path = "database/migrations/"
+    def __get_migrations__(self):
         migrations =\
-            sorted([file for file in listdir(migrations_path) if isfile(join(migrations_path, file)) and file.endswith(".sql")])
+            sorted([file for file in listdir(self.migrations_path) if isfile(join(self.migrations_path, file)) and file.endswith(".sql")])
 
         result = []
         for i in range(len(migrations)):
-            result.append((i + 1, open(migrations_path + migrations[i], encoding="utf8").read()))
+            result.append((i + 1, open(self.migrations_path + migrations[i], encoding="utf8").read()))
 
         return result
 
