@@ -95,6 +95,48 @@ class DatabaseClient:
 
         return int(result[0])
 
+    def all(self, table):
+        connection = None
+
+        try:
+            connection = self.open()
+            cursor = connection.cursor()
+
+            result = cursor.execute("SELECT * FROM {}".format(table)).fetchall()
+        finally:
+            if connection:
+                connection.close()
+
+        return result
+
+    def get(self, table, id):
+        connection = None
+
+        try:
+            connection = self.open()
+            cursor = connection.cursor()
+
+            result = cursor.execute("SELECT * FROM {} WHERE id=?".format(table), (id,)).fetchone()
+        finally:
+            if connection:
+                connection.close()
+
+        return result
+
+    def where(self, table, clause):
+        connection = None
+
+        try:
+            connection = self.open()
+            cursor = connection.cursor()
+
+            result = cursor.execute("SELECT * FROM {} WHERE {}".format(table, clause)).fetchall()
+        finally:
+            if connection:
+                connection.close()
+
+        return result
+
     def insert(self, table, entity):
         connection = None
 
