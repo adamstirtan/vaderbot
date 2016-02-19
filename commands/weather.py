@@ -1,11 +1,10 @@
-def weather(database, channel, params):
-    import requests
-    import json
-    import math
+import requests
+import json
+import math
 
+def weather(database, channel, params):
     if len(params) == 0:
         return
-
 
     query = " ".join(params)
     api_key = "44db6a862fba0b067b1930da0d769e98"
@@ -15,8 +14,5 @@ def weather(database, channel, params):
 
     weather = "{} {} {}{} {}".format(data['name'],math.trunc(data['main']['temp']-273.15), "\N{DEGREE SIGN}","C " , data['weather'][0]['description'])
 
-    print(weather)
-
     channel.send_message(weather)
 
-# weather(None,None,"burlington")
