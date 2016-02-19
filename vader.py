@@ -11,7 +11,7 @@ from commands.quote import quote
 from commands.scream import scream
 from commands.scream_loud import scream_loud
 from commands.urban_dictionary import urban_dictionary
-
+from commands.weather import weather
 
 class Vader:
 
@@ -26,7 +26,8 @@ class Vader:
         "!quote": quote,
         "!scream": scream,
         "!SCREAM": scream_loud,
-        "!ud": urban_dictionary
+        "!ud": urban_dictionary,
+        "!weather": weather
     }
 
     def __init__(self):
@@ -57,7 +58,7 @@ class Vader:
 
                 command = message.split()[0]
 
-                if user.name == "mastadonn" and (command == "!scream" or command == "!SCREAM"):
+                if user.name == "rhaydeo" and (command == "!scream" or command == "!SCREAM"):
                     channel.send_message("http://i.giphy.com/uOAXDA7ZeJJzW.gif")
                     return
 
