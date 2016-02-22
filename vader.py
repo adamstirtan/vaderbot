@@ -14,6 +14,7 @@ from commands.scream_loud import scream_loud
 from commands.urban_dictionary import urban_dictionary
 from commands.weather import weather
 
+
 class Vader:
 
     client = None
@@ -59,10 +60,6 @@ class Vader:
                     return
 
                 command = message.split()[0]
-
-                if user.name == "rhaydeo" and (command == "!scream" or command == "!SCREAM"):
-                    channel.send_message("http://i.giphy.com/uOAXDA7ZeJJzW.gif")
-                    return
 
                 for k, v in self.commands.items():
                     if command == k:
