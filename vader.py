@@ -69,5 +69,5 @@ class Vader:
                         v(self.database, channel, message.split()[1:])
                         break
 
-        except KeyError:
+        except (KeyError, StopIteration):
             pass
