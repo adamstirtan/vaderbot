@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 from slackclient import SlackClient
 from database.databaseclient import DatabaseClient
+from commands.add_point import add_point
 from commands.add_quote import add_quote
 from commands.aol_say import aol_say
 from commands.convert import convert
@@ -19,6 +20,7 @@ class Vader:
     database = None
     token = "xoxb-16470487171-NEqcYbtwqYrDWeXktwbWVUho"
     commands = {
+        "!addpoint": add_point,
         "!addquote": add_quote,
         "!aolsay": aol_say,
         "!convert": convert,
