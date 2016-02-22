@@ -11,27 +11,18 @@ def __random_quote__(database, channel):
     db = database.open()
 
     cursor = db.cursor()
-    result = cursor.execute(
-        '''SELECT id, quote FROM quotes ORDER BY RANDOM() LIMIT 1''').fetchone()
+    result = cursor.execute("SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1").fetchone()
 
     db.close()
 
     if result:
-        channel.send_message("({}) {}".format(result[0], result[1].replace("@", "")))
-    else:
-        channel.send_message("There are no quotes yet.")
+        channel.send_message("#{} - {} points".format(result[0], result[2]))
+        channel.send_message(result[1])
 
 
 def __id_quote__(database, channel, quote_id):
-    db = database.open()
+    entity = database.get("quotes", quote_id)
 
-    cursor = db.cursor()
-    result = cursor.execute(
-        '''SELECT id, quote FROM quotes WHERE id=?''', (quote_id,)).fetchone()
-
-    db.close()
-
-    if result:
-        channel.send_message("({}) {}".format(result[0], result[1].replace("@", "")))
-    else:
-        channel.send_message("There is no quote with that number.")
+    if quote:
+        channel.send_message("#{} - {} points".format(entity[0], entity[2]))
+        channel.send_message(entity[1])

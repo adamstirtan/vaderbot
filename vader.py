@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 from slackclient import SlackClient
 from database.databaseclient import DatabaseClient
+from commands.add_point import add_point
 from commands.add_quote import add_quote
 from commands.aol_say import aol_say
 from commands.convert import convert
@@ -13,12 +14,14 @@ from commands.scream_loud import scream_loud
 from commands.urban_dictionary import urban_dictionary
 from commands.weather import weather
 
+
 class Vader:
 
     client = None
     database = None
     token = "xoxb-16470487171-NEqcYbtwqYrDWeXktwbWVUho"
     commands = {
+        "!addpoint": add_point,
         "!addquote": add_quote,
         "!aolsay": aol_say,
         "!convert": convert,
@@ -58,14 +61,10 @@ class Vader:
 
                 command = message.split()[0]
 
-                if user.name == "rhaydeo" and (command == "!scream" or command == "!SCREAM"):
-                    channel.send_message("http://i.giphy.com/uOAXDA7ZeJJzW.gif")
-                    return
-
                 for k, v in self.commands.items():
                     if command == k:
                         v(self.database, channel, message.split()[1:])
                         break
 
-        except KeyError:
+        except (KeyError, StopIteration):
             pass

@@ -85,7 +85,6 @@ class DatabaseClient:
 
         try:
             connection = self.open()
-            connection.row_factory = sqlite3.Row
             cursor = connection.cursor()
 
             result = cursor.execute("SELECT COUNT(id) FROM {}".format(table)).fetchone()
@@ -109,14 +108,14 @@ class DatabaseClient:
 
         return result
 
-    def get(self, table, id):
+    def get(self, table, entity_id):
         connection = None
 
         try:
             connection = self.open()
             cursor = connection.cursor()
 
-            result = cursor.execute("SELECT * FROM {} WHERE id=?".format(table), (id,)).fetchone()
+            result = cursor.execute("SELECT * FROM {} WHERE id=?".format(table), (entity_id,)).fetchone()
         finally:
             if connection:
                 connection.close()
@@ -154,3 +153,21 @@ class DatabaseClient:
                 connection.close()
 
         return cursor.lastrowid
+
+    def update(self, table, entity_id, updated_entity):
+        connection = None
+
+        try:
+            connection = self.open()
+            cursor = connection.execute("SELECT * FROM {}".format(table))
+
+            columns = []
+            for k, v in updated_entity.items():
+                columns.append(str(k) + " = " + str(v))
+
+            cursor.execute("UPDATE {} SET {} WHERE id=?".format(table, ", ".join(columns)), (entity_id,))
+
+            connection.commit()
+        finally:
+            if connection:
+                connection.close()
