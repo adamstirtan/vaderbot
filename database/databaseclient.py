@@ -161,11 +161,11 @@ class DatabaseClient:
             connection = self.open()
             cursor = connection.execute("SELECT * FROM {}".format(table))
 
-            columns = ""
+            columns = []
             for k, v in updated_entity.items():
-                columns += str(k) + " = " + str(v)
+                columns.append(str(k) + " = " + str(v))
 
-            cursor.execute("UPDATE {} SET {} WHERE id=?".format(table, columns, entity_id))
+            cursor.execute("UPDATE {} SET {} WHERE id=?".format(table, ", ".join(columns)), (entity_id,))
 
             connection.commit()
         finally:
