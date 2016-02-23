@@ -23,6 +23,6 @@ def __random_quote__(database, channel):
 def __id_quote__(database, channel, quote_id):
     entity = database.get("quotes", quote_id)
 
-    if quote:
+    if entity:
         channel.send_message("#{} - {} points".format(entity[0], entity[2]))
         channel.send_message(entity[1])
