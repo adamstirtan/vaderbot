@@ -12,6 +12,7 @@ from commands.quote import quote
 from commands.scream import scream
 from commands.scream_loud import scream_loud
 from commands.top_quotes import top_quotes
+from commands.update import update
 from commands.urban_dictionary import urban_dictionary
 from commands.weather import weather
 
@@ -31,6 +32,7 @@ class Vader:
         "!scream": scream,
         "!SCREAM": scream_loud,
         "!topquotes": top_quotes,
+        "!update": update,
         "!ud": urban_dictionary,
         "!weather": weather
     }
@@ -67,9 +69,9 @@ class Vader:
                     channel.send_message("Available commands: {}".format(
                         ", ".join(sorted(self.commands.keys(), key=lambda x: x.lower()))))
                 else:
-                    for k, v in self.commands.items():
-                        if command == k:
-                            v(self.database, channel, message.split()[1:])
+                    for trigger, func in self.commands.items():
+                        if command == trigger:
+                            func(self.database, channel, message.split()[1:])
                             break
 
         except (KeyError, StopIteration):
