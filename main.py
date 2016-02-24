@@ -6,9 +6,9 @@ from http.server import HTTPServer
 
 
 def main():
-    server_address = ("127.0.0.1", 80)
-    server = HTTPServer(server_address, BotRequestHandler)
-    server.serve_forever()
+    #server_address = ("127.0.0.1", 80)
+    #server = HTTPServer(server_address, BotRequestHandler)
+    #server.serve_forever()
 
     bot = Vader()
     bot.connect()
