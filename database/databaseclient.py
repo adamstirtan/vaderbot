@@ -16,8 +16,7 @@ class DatabaseClient:
 
         for migration in migrations[schema_version:]:
             version = migration[0]
-            statements = [s.strip() for s in migration[1].splitlines()]
-
+            statements = [s.strip().decode("utf8") for s in migration[1].splitlines()]
             for statement in statements:
                 self.__perform_upgrade__(statement)
 
