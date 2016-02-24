@@ -63,10 +63,14 @@ class Vader:
 
                 command = message.split()[0]
 
-                for k, v in self.commands.items():
-                    if command == k:
-                        v(self.database, channel, message.split()[1:])
-                        break
+                if command == "!help":
+                    channel.send_message("Available commands: {}".format(
+                        ", ".join(sorted(self.commands.keys(), key=lambda x: x.lower()))))
+                else:
+                    for k, v in self.commands.items():
+                        if command == k:
+                            v(self.database, channel, message.split()[1:])
+                            break
 
         except (KeyError, StopIteration):
             pass
