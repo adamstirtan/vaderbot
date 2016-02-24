@@ -1,13 +1,11 @@
 import sqlite3
-
-from os import listdir
-from os.path import isfile, join
+import zipfile
 
 
 class DatabaseClient:
 
     db_file = "database/bot.db"
-    migrations_path = "database/migrations/"
+    migrations_file = "database/migrations/migrations.zip"
 
     def __init__(self):
         self.__upgrade_database__()
@@ -26,12 +24,13 @@ class DatabaseClient:
             self.__set_schema_version__(version)
 
     def __get_migrations__(self):
-        migrations =\
-            sorted([file for file in listdir(self.migrations_path) if isfile(join(self.migrations_path, file)) and file.endswith(".sql")])
-
         result = []
-        for i in range(len(migrations)):
-            result.append((i + 1, open(self.migrations_path + migrations[i], encoding="utf8").read()))
+
+        zip_file = zipfile.ZipFile(self.migrations_file)
+
+        for index, file_name in enumerate(zip_file.namelist()):
+            with zip_file.open(file_name) as f:
+                result.append((index + 1, f.read()))
 
         return result
 
