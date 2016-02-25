@@ -1,0 +1,9 @@
+[Unit]
+Description=Vaderbot System Service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/vaderbot.sh
+
+[Install]
+WantedBy=multi-user.target
