@@ -11,6 +11,7 @@ from commands.count import count
 from commands.quote import quote
 from commands.scream import scream
 from commands.scream_loud import scream_loud
+from commands.take_point import take_point
 from commands.top_quotes import top_quotes
 from commands.urban_dictionary import urban_dictionary
 from commands.update import update
@@ -31,6 +32,7 @@ class Vader:
         "!quote": quote,
         "!scream": scream,
         "!SCREAM": scream_loud,
+        "!takepoint": take_point,
         "!topquotes": top_quotes,
         "!ud": urban_dictionary,
         "!update": update,
