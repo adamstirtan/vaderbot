@@ -13,8 +13,8 @@ from commands.scream import scream
 from commands.scream_loud import scream_loud
 from commands.take_point import take_point
 from commands.top_quotes import top_quotes
-from commands.urban_dictionary import urban_dictionary
 from commands.update import update
+from commands.urban_dictionary import urban_dictionary
 from commands.weather import weather
 
 
