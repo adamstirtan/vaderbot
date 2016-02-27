@@ -2,7 +2,7 @@ import time
 
 from datetime import datetime
 from slackclient import SlackClient
-from database.databaseclient import DatabaseClient
+from database.database_client import DatabaseClient
 from commands.add_point import add_point
 from commands.add_quote import add_quote
 from commands.aol_say import aol_say
