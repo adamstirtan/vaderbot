@@ -14,3 +14,6 @@ class User(Entity):
     @name.setter
     def name(self, value):
         self._name = value
+
+    def table_name(self):
+        return "users"

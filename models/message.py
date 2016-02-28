@@ -32,3 +32,6 @@ class Message(Entity):
     @message_time.setter
     def message_time(self, value):
         self._message_time = value
+
+    def table_name(self):
+        return "messages"

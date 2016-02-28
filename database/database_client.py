@@ -1,98 +1,89 @@
 import sqlite3
+import zipfile
+
+from database.repositories.message_repository import MessageRepository
+from database.repositories.quote_repository import QuoteRepository
+from database.repositories.user_repository import UserRepository
 
 
 class DatabaseClient:
 
+    database_file_name = "database/bot.db"
+    migrations_file_name = "database/migrations/migrations.zip"
+
+    def __init__(self):
+        self.upgrade()
+
     @staticmethod
-    def open():
-        return sqlite3.connect("database/bot.db")
+    def repository(cls):
+        if cls.__name__ == "Message":
+            return MessageRepository()
+        elif cls.__name__ == "Quote":
+            return QuoteRepository()
+        elif cls.__name__ == "User":
+            return UserRepository()
 
-    def count(self, table):
-        connection = None
+        return None
 
-        try:
-            connection = self.open()
-            cursor = connection.cursor()
+    def upgrade(self):
+        migrations = self.__get_migrations__()
+        schema_version = self.__get_schema_version__()
 
-            result = cursor.execute("SELECT COUNT(id) FROM {}".format(table)).fetchone()
-        finally:
-            if connection:
-                connection.close()
+        for migration in migrations[schema_version:]:
+            version = migration[0]
+            statements = [s.strip().decode("utf8") for s in migration[1].splitlines()]
+            for statement in statements:
+                self.__perform_upgrade__(statement)
 
-        return int(result[0])
+            self.__set_schema_version__(version)
 
-    def all(self, table):
-        connection = None
+    def __get_migrations__(self):
+        result = []
 
-        try:
-            connection = self.open()
-            cursor = connection.cursor()
+        zip_file = zipfile.ZipFile(self.migrations_file_name)
 
-            result = cursor.execute("SELECT * FROM {}".format(table)).fetchall()
-        finally:
-            if connection:
-                connection.close()
-
-        return result
-
-    def get(self, table, entity_id):
-        connection = None
-
-        try:
-            connection = self.open()
-            cursor = connection.cursor()
-
-            result = cursor.execute("SELECT * FROM {} WHERE id=?".format(table), (entity_id,)).fetchone()
-        finally:
-            if connection:
-                connection.close()
+        for index, file_name in enumerate(zip_file.namelist()):
+            with zip_file.open(file_name) as f:
+                result.append((index + 1, f.read()))
 
         return result
 
-    def where(self, table, clause):
+    def __perform_upgrade__(self, statement):
         connection = None
 
         try:
-            connection = self.open()
+            connection = sqlite3.connect(self.database_file_name)
             cursor = connection.cursor()
 
-            result = cursor.execute("SELECT * FROM {} WHERE {}".format(table, clause)).fetchall()
-        finally:
-            if connection:
-                connection.close()
-
-        return result
-
-    def insert(self, table, entity):
-        connection = None
-
-        try:
-            connection = self.open()
-            cursor = connection.execute("SELECT * FROM {}".format(table))
-            columns = ", ".join(description[0] for description in cursor.description[1:])
-
-            cursor.execute("INSERT INTO {} ({}) VALUES ({})"
-                           .format(table, columns, ", ".join((columns.count(",") + 1) * "?")), entity)
+            cursor.execute(statement)
 
             connection.commit()
         finally:
             if connection:
                 connection.close()
 
-        return cursor.lastrowid
-
-    def update(self, table, entity_id, updated_entity):
+    def __get_schema_version__(self):
         connection = None
 
         try:
-            connection = self.open()
-            cursor = connection.execute("SELECT * FROM {}".format(table))
+            connection = sqlite3.connect(self.database_file_name)
+            cursor = connection.cursor()
 
-            columns = []
-            for k, v in updated_entity.items():
-                columns.append(str(k) + " = " + str(v))
+            result = cursor.execute("PRAGMA user_version").fetchone()[0]
+        finally:
+            if connection:
+                connection.close()
 
-            cursor.execute("UPDATE {} SET {} WHERE id=?".format(table, ", ".join(columns)), (entity_id,))
+        return result
+
+    def __set_schema_version__(self, version):
+        connection = None
+
+        try:
+            connection = sqlite3.connect(self.database_file_name)
+            cursor = connection.cursor()
+
+            cursor.execute("PRAGMA user_version = {}".format(version))
 
             connection.commit()
         finally:

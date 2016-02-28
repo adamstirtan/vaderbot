@@ -23,3 +23,6 @@ class Quote(Entity):
     @points.setter
     def points(self, value):
         self._points = value
+
+    def table_name(self):
+        return "quotes"

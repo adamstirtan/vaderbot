@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 from slackclient import SlackClient
 from database.database_client import DatabaseClient
+from models.message import Message
 from commands.add_point import add_point
 from commands.add_quote import add_quote
 from commands.aol_say import aol_say
@@ -21,7 +22,8 @@ from commands.weather import weather
 class Vader:
 
     client = None
-    database = None
+    database_client = None
+    message_repository = None
     token = "xoxb-16470487171-NEqcYbtwqYrDWeXktwbWVUho"
     commands = {
         "!addpoint": add_point,
@@ -41,7 +43,8 @@ class Vader:
 
     def __init__(self):
         self.client = SlackClient(self.token)
-        self.database = DatabaseClient()
+        self.database_client = DatabaseClient()
+        self.message_repository = self.database_client.repository(Message)
 
     def connect(self):
         self.client.rtm_connect()
@@ -62,19 +65,20 @@ class Vader:
                 user = next(user for user in self.client.server.users if user.id == event["user"])
 
                 if message[0] != "!" and user.name != "vader":
-                    self.database.insert("messages", (user.name, message, datetime.now()))
+                    self.message_repository.add(Message(user.name, message, datetime.now()))
                     return
 
                 command = message.split()[0]
 
                 if command == "!help":
-                    channel.send_message("Available commands: {}".format(
-                        ", ".join(sorted(self.commands.keys(), key=lambda x: x.lower()))))
-                else:
-                    for k, v in self.commands.items():
-                        if command == k:
-                            v(self.database, channel, message.split()[1:])
-                            break
+                    channel.send_message("Available commands: {}"
+                                         .format(", ".join(sorted(self.commands.keys(), key=lambda x: x.lower()))))
+                    return
+
+                for key, value in self.commands.items():
+                    if command == key:
+                        value(self.database_client, channel, message.split()[1:])
+                        break
 
         except (KeyError, StopIteration):
             pass
