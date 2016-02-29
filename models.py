@@ -20,6 +20,10 @@ class Entity:
     def table_name(self):
         pass
 
+    @abstractclassmethod
+    def to_tuple(self):
+        pass
+
 
 class Message(Entity):
 
@@ -56,6 +60,9 @@ class Message(Entity):
     def table_name(self):
         return "messages"
 
+    def to_tuple(self):
+        return self.name, self.message, self.message_time
+
 
 class Quote(Entity):
 
@@ -83,6 +90,9 @@ class Quote(Entity):
     def table_name(self):
         return "quotes"
 
+    def to_tuple(self):
+        return self.quote, self.points
+
 
 class User(Entity):
 
@@ -100,3 +110,6 @@ class User(Entity):
 
     def table_name(self):
         return "users"
+
+    def to_tuple(self):
+        return self.name,

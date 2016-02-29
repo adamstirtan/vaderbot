@@ -4,7 +4,6 @@ from abc import ABCMeta, abstractclassmethod
 
 
 class Repository:
-
     __metaclass__ = ABCMeta
 
     @staticmethod
@@ -37,8 +36,9 @@ class Repository:
             cursor = connection.execute("SELECT * FROM {}".format(entity.table_name()))
             columns = ", ".join(description[0] for description in cursor.description[1:])
 
-            cursor.execute("INSERT INTO {} ({}) VALUES ({})"
-                           .format(entity.table_name(), columns, ", ".join((columns.count(",") + 1) * "?")), entity)
+            cursor.execute("INSERT INTO {} ({}) VALUES ({})".format(entity.table_name(), columns,
+                                                                    ", ".join((columns.count(",") + 1) * "?")),
+                           entity.to_tuple())
 
             connection.commit()
         finally:
