@@ -1,28 +1,29 @@
-def quote(database, channel, params):
-    if len(params) == 0:
-        __random_quote__(database, channel)
-    elif len(params) == 1 and params[0].isdigit():
-        __id_quote__(database, channel, params[0])
-    else:
-        channel.send_message("Usage: !quote [optional: query]")
+from commands.command import Command
 
 
-def __random_quote__(database, channel):
-    db = database.open()
+class QuoteCommand(Command):
 
-    cursor = db.cursor()
-    result = cursor.execute("SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1").fetchone()
+    def __init__(self, quote_repository):
+        Command.__init__(self)
 
-    db.close()
+        self._quote_repository = quote_repository
 
-    if result:
-        channel.send_message("#{} - {} points".format(result[0], result[2]))
-        channel.send_message(result[1])
+    def execute(self, channel, parameters):
+        if len(parameters) == 0:
+            self.__random_quote__(channel)
+        elif len(parameters) == 1 and parameters[0].isdigit():
+            self.__id_quote__(channel, parameters[0])
+        else:
+            channel.send_message("Usage: !quote [optional: query]")
 
+    def __random_quote__(self, channel):
+        quote = self._quote_repository.random()
 
-def __id_quote__(database, channel, quote_id):
-    entity = database.get("quotes", quote_id)
+        if quote:
+            channel.send_message("#{} - {} points\n{}".format(quote.entity_id, quote.points, quote.quote))
 
-    if entity:
-        channel.send_message("#{} - {} points".format(entity[0], entity[2]))
-        channel.send_message(entity[1])
+    def __id_quote__(self, channel, quote_id):
+        quote = self._quote_repository.get(quote_id)
+
+        if quote:
+            channel.send_message("#{} - {} points\n{}".format(quote.entity_id, quote.points, quote.quote))

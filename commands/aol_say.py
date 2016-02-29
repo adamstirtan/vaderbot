@@ -1,9 +1,16 @@
-from random import choice
+import random
+
+from commands.command import Command
 
 
-def aol_say(database, channel, params):
-    if len(params) > 0:
-        channel.send_message("Usage: !aolsay")
-        return
+class AolSayCommand(Command):
 
-    channel.send_message(choice(list(open("commands/aolsay.txt"))))
+    def __init__(self):
+        Command.__init__(self)
+
+    def execute(self, channel, parameters):
+        if len(parameters) > 0:
+            channel.send_message("Usage: !aolsay")
+            return
+
+        channel.send_message(random.choice(list(open("commands/aolsay.txt"))))

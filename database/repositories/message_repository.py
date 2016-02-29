@@ -16,7 +16,7 @@ class MessageRepository(Repository):
         return self.__all__()
 
     def get(self, entity_id):
-        return self.__get__(entity_id)
+        return self.__get___(entity_id)
 
     def where(self, clause):
         return self.__where__(clause)

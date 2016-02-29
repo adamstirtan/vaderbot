@@ -1,10 +1,21 @@
-def add_quote(database, channel, params):
-    if len(params) == 0:
-        channel.send_message("Usage: !addquote [message]")
-        return
+from commands.command import Command
+from models import Quote
 
-    message = " ".join(params)
 
-    result = database.insert("quotes", (message, 0))
+class AddQuoteCommand(Command):
 
-    channel.send_message("Bleep bloop! Quote number {} added.".format(result))
+    def __init__(self, quote_repository):
+        Command.__init__(self)
+
+        self._quote_repository = quote_repository
+
+    def execute(self, channel, parameters):
+        if len(parameters) == 0:
+            channel.send_message("Usage: !addquote [message]")
+            return
+
+        message = " ".join(parameters)
+
+        result = self._quote_repository.add(Quote(message, 0))
+
+        channel.send_message("Bleep bloop! Quote number {} added.".format(result))

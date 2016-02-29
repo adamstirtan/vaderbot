@@ -2,7 +2,6 @@
 
 from vader import Vader
 from database.database_client import DatabaseClient
-from models.message import Message
 from web.request_handler import BotRequestHandler
 from http.server import HTTPServer
 from threading import Thread
