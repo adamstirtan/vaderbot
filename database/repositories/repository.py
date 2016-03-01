@@ -20,8 +20,9 @@ class Repository:
         try:
             connection = self.open()
             cursor = connection.cursor()
+            query = "SELECT COUNT(id) FROM {}".format(self.table_name())
 
-            result = cursor.execute("SELECT COUNT(id) FROM {}".format(self.table_name())).fetchone()
+            result = cursor.execute(query).fetchone()
         finally:
             if connection:
                 connection.close()
@@ -35,15 +36,17 @@ class Repository:
             connection = self.open()
             cursor = connection.execute("SELECT * FROM {}".format(entity.table_name()))
             columns = ", ".join(description[0] for description in cursor.description[1:])
+            query = "INSERT INTO {} ({}) VALUES ({})".format(
+                entity.table_name(), columns, ", ".join((columns.count(",") + 1) * "?"))
 
-            cursor.execute("INSERT INTO {} ({}) VALUES ({})".format(entity.table_name(), columns,
-                                                                    ", ".join((columns.count(",") + 1) * "?")),
-                           entity.to_tuple())
+            cursor.execute(query, entity.to_tuple())
 
             connection.commit()
         finally:
             if connection:
                 connection.close()
+
+        return cursor.lastrowid
 
     def __all__(self):
         connection = None
@@ -51,8 +54,9 @@ class Repository:
         try:
             connection = self.open()
             cursor = connection.cursor()
+            query = "SELECT * FROM {}".format(self.table_name())
 
-            entities = cursor.execute("SELECT * FROM {}".format(self.table_name())).fetchall()
+            entities = cursor.execute(query).fetchall()
         finally:
             if connection:
                 connection.close()
@@ -65,8 +69,9 @@ class Repository:
         try:
             connection = self.open()
             cursor = connection.cursor()
+            query = "SELECT * FROM {} where id=?".format(self.table_name())
 
-            entity = cursor.execute("SELECT * FROM {} where id=?".format(self.table_name()), (entity_id,)).fetchone()
+            entity = cursor.execute(query, (entity_id,)).fetchone()
         finally:
             if connection:
                 connection.close()
@@ -79,39 +84,27 @@ class Repository:
         try:
             connection = self.open()
             cursor = connection.cursor()
+            query = "SELECT * FROM [] WHERE {}".format(self.table_name(), clause)
 
-            result = cursor.execute("SELECT * FROM [] WHERE {}".format(self.table_name(), clause)).fetchall()
+            result = cursor.execute(query).fetchall()
         finally:
             if connection:
                 connection.close()
 
         return result
 
-    def __update__(self, entity):
-        connection = None
-
-        try:
-            connection = self.open()
-            cursor = connection.execute("SELECT * FROM {}".format(entity.table_name()))
-
-            columns = []
-            for k, v in entity.items():
-                columns.append(str(k) + " = " + str(v))
-
-            cursor.execute("UPDATE {} SET {} WHERE id=?"
-                           .format(entity.table_name(), ", ".join(columns)), (entity.entity_id,))
-
-            connection.commit()
-        finally:
-            if connection:
-                connection.close()
+    @abstractclassmethod
+    def update(self, entity):
+        pass
 
     def __remove__(self, entity):
         connection = None
 
         try:
             connection = self.open()
-            connection.execute("DELETE FROM {} WHERE id-?".format(self.table_name()), (entity.entity_id,))
+            query = "DELETE FROM {} WHERE id-?".format(self.table_name())
+
+            connection.execute(query, (entity.entity_id,))
         finally:
             if connection:
                 connection.close()

@@ -14,8 +14,6 @@ class AddQuoteCommand(Command):
             channel.send_message("Usage: !addquote [message]")
             return
 
-        message = " ".join(parameters)
-
-        result = self._quote_repository.add(Quote(message, 0))
+        result = self._quote_repository.add(Quote(" ".join(parameters), 0))
 
         channel.send_message("Bleep bloop! Quote number {} added.".format(result))

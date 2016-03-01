@@ -1,8 +1,8 @@
 from database.repositories.repository import Repository
+from models import Message
 
 
 class MessageRepository(Repository):
-
     def __init__(self):
         Repository.__init__(self)
 
@@ -16,13 +16,25 @@ class MessageRepository(Repository):
         return self.__all__()
 
     def get(self, entity_id):
-        return self.__get___(entity_id)
+        entity = self.__get__(entity_id)
+        return Message(entity[1], entity[2], entity[3], entity[0])
 
     def where(self, clause):
         return self.__where__(clause)
 
     def update(self, entity):
-        return self.__update__(entity)
+        connection = None
+
+        try:
+            connection = self.open()
+            cursor = connection.cursor()
+            query = "UPDATE {} SET user = {}, message = {}, message_time = {}".format(
+                self.table_name(), entity.user, entity.message, entity.message_time)
+
+            cursor.execute(query, (entity.entity_id,))
+        finally:
+            if connection:
+                connection.close()
 
     def remove(self, entity):
         return self.__remove__(entity)
