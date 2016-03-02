@@ -25,8 +25,7 @@ class QuoteRepository(Repository):
     def update(self, entity):
         with self.open() as connection:
             cursor = connection.cursor()
-            query = "UPDATE {} SET quote = '{}', points = {} WHERE id=?".format(
-                self.table_name(), entity.quote, entity.points)
+            query = "UPDATE quotes SET quote = '{}', points = {} WHERE id=?".format(entity.quote, entity.points)
 
             cursor.execute(query, (entity.entity_id,))
 
@@ -37,6 +36,14 @@ class QuoteRepository(Repository):
         with self.open() as connection:
             cursor = connection.cursor()
             query = "SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1"
+
+            entity = cursor.execute(query).fetchone()
+            return Quote(entity[1], entity[2], entity[0]) if entity else None
+
+    def search(self, clause):
+        with self.open() as connection:
+            cursor = connection.cursor()
+            query = "SELECT * FROM quotes WHERE {} ORDER BY RANDOM() LIMIT 1".format(clause)
 
             entity = cursor.execute(query).fetchone()
             return Quote(entity[1], entity[2], entity[0]) if entity else None
