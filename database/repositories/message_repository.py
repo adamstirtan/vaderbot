@@ -23,18 +23,12 @@ class MessageRepository(Repository):
         return self.__where__(clause)
 
     def update(self, entity):
-        connection = None
-
-        try:
-            connection = self.open()
+        with self.open() as connection:
             cursor = connection.cursor()
             query = "UPDATE {} SET user = {}, message = {}, message_time = {}".format(
                 self.table_name(), entity.user, entity.message, entity.message_time)
 
             cursor.execute(query, (entity.entity_id,))
-        finally:
-            if connection:
-                connection.close()
 
     def remove(self, entity):
         return self.__remove__(entity)

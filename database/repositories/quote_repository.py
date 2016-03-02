@@ -23,33 +23,20 @@ class QuoteRepository(Repository):
         return self.__where__(clause)
 
     def update(self, entity):
-        connection = None
-
-        try:
-            connection = self.open()
+        with self.open() as connection:
             cursor = connection.cursor()
             query = "UPDATE {} SET quote = '{}', points = {} WHERE id=?".format(
                 self.table_name(), entity.quote, entity.points)
 
             cursor.execute(query, (entity.entity_id,))
-        finally:
-            if connection:
-                connection.close()
 
     def remove(self, entity):
         return self.__remove__(entity)
 
     def random(self):
-        connection = None
-
-        try:
-            connection = self.open()
+        with self.open() as connection:
             cursor = connection.cursor()
             query = "SELECT * FROM quotes ORDER BY RANDOM() LIMIT 1"
 
             entity = cursor.execute(query).fetchone()
-        finally:
-            if connection:
-                connection.close()
-
-        return Quote(entity[1], entity[2], entity[0]) if entity else None
+            return Quote(entity[1], entity[2], entity[0]) if entity else None
