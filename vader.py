@@ -11,7 +11,6 @@ from commands.convert import ConvertCommand
 from commands.count import CountCommand
 from commands.quote import QuoteCommand
 from commands.scream import ScreamCommand
-from commands.scream_loud import ScreamLoudCommand
 from commands.take_point import TakePointCommand
 from commands.update import  UpdateCommand
 from commands.urban_dictionary import UrbanDictionaryCommand
@@ -33,7 +32,7 @@ class Vader:
             "!count": CountCommand(database.repository(Message), database.repository(Quote)),
             "!quote": QuoteCommand(database.repository(Quote)),
             "!scream": ScreamCommand(),
-            "!SCREAM": ScreamLoudCommand(),
+            "!SCREAM": ScreamCommand(loud=True),
             "!takepoint": TakePointCommand(database.repository(Quote)),
             "!ud": UrbanDictionaryCommand(),
             "!update": UpdateCommand(),

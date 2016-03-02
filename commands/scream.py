@@ -1,22 +1,45 @@
 import random
 
 from commands.command import Command
-
+import string
 
 class ScreamCommand(Command):
+    dont_scream = string.punctuation + string.whitespace
+    max_length = 50
+    default_word = "BWAUGH"
 
-    def __init__(self):
+    def __init__(self, loud=False):
         Command.__init__(self)
+        self.volume = 8 if not loud else 16
+
+    def validate(self, parameters):
+        if len(" ".join(parameters)) > self.max_length:
+            return False
+        return True
+
+    def generate_output(self, parameters):
+        if len(parameters) > 0:
+            output = "   ".join([self._scream(word) for word in parameters])
+        else:
+            output = self._scream(self.default_word)
+
+        return output.upper()
 
     def execute(self, channel, parameters):
-        word = " ".join(parameters)
+        if self.validate(parameters):
+            message = self.generate_output(parameters)
+        else:
+            message = "That's not a good idea."
 
-        if len(word) > 50:
-            channel.send_message("That's not a good idea.")
-            return
-        elif word == "":
-            word = "BWAUGH"
+        channel.send_message(message)
 
-        word = word.upper()
+    def _scream(self, word):
+        screamed = word[0]
 
-        channel.send_message((lambda w: w[0] + "".join(c * random.randint(1, 8) for c in word[1:]))(word))
+        for c in word[1:]:
+            if not c in self.dont_scream:
+                screamed += c*random.randint(1,self.volume)
+            else:
+                screamed += c
+
+        return screamed
