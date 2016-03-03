@@ -3,6 +3,7 @@ from models import Message
 
 
 class MessageRepository(Repository):
+
     def __init__(self):
         Repository.__init__(self)
 
@@ -25,10 +26,11 @@ class MessageRepository(Repository):
     def update(self, entity):
         with self.open() as connection:
             cursor = connection.cursor()
-            query = "UPDATE {} SET user = {}, message = {}, message_time = {}".format(
-                self.table_name(), entity.user, entity.message, entity.message_time)
+            query = "UPDATE users SET user = {}, message = {}, message_time = {} WHERE id=?".format(
+                entity.user, entity.message, entity.message_time)
 
             cursor.execute(query, (entity.entity_id,))
+            return entity
 
     def remove(self, entity):
         return self.__remove__(entity)

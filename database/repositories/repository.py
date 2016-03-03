@@ -4,6 +4,7 @@ from abc import ABCMeta, abstractmethod
 
 
 class Repository:
+
     __metaclass__ = ABCMeta
 
     @staticmethod

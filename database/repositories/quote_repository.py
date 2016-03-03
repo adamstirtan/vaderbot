@@ -3,6 +3,7 @@ from models import Quote
 
 
 class QuoteRepository(Repository):
+
     def __init__(self):
         Repository.__init__(self)
 
@@ -28,6 +29,7 @@ class QuoteRepository(Repository):
             query = "UPDATE quotes SET quote = '{}', points = {} WHERE id=?".format(entity.quote, entity.points)
 
             cursor.execute(query, (entity.entity_id,))
+            return entity
 
     def remove(self, entity):
         return self.__remove__(entity)
