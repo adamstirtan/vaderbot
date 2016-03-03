@@ -1,4 +1,4 @@
-from abc import ABCMeta, abstractclassmethod
+from abc import ABCMeta, abstractmethod
 
 
 class Entity:
@@ -16,11 +16,11 @@ class Entity:
     def entity_id(self, value):
         self._entity_id = value
 
-    @abstractclassmethod
+    @abstractmethod
     def table_name(self):
         pass
 
-    @abstractclassmethod
+    @abstractmethod
     def to_tuple(self):
         pass
 

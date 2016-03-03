@@ -1,6 +1,6 @@
 import sqlite3
 
-from abc import ABCMeta, abstractclassmethod
+from abc import ABCMeta, abstractmethod
 
 
 class Repository:
@@ -10,7 +10,7 @@ class Repository:
     def open():
         return sqlite3.connect("database/bot.db")
 
-    @abstractclassmethod
+    @abstractmethod
     def table_name(self):
         pass
 
@@ -54,7 +54,7 @@ class Repository:
 
             return cursor.execute(query).fetchall()
 
-    @abstractclassmethod
+    @abstractmethod
     def update(self, entity):
         pass
 
