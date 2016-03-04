@@ -29,6 +29,7 @@ class Message(Entity):
 
     def __init__(self, name, message, message_time, entity_id=0):
         Entity.__init__(self, entity_id)
+
         self._name = name
         self._message = message
         self._message_time = message_time
@@ -68,6 +69,7 @@ class Quote(Entity):
 
     def __init__(self, quote, points, entity_id=0):
         Entity.__init__(self, entity_id)
+
         self._quote = quote
         self._points = points
 
@@ -98,6 +100,7 @@ class User(Entity):
 
     def __init__(self, name, entity_id=0):
         Entity.__init__(self, entity_id)
+
         self._name = name
 
     @property
@@ -113,3 +116,34 @@ class User(Entity):
 
     def to_tuple(self):
         return self.name,
+
+
+class TriviaQuestion(Entity):
+
+    def __init__(self, question, answer, entity_id=0):
+        Entity.__init__(self, entity_id)
+
+        self._question = question
+        self._answer = answer
+
+    @property
+    def question(self):
+        return self._question
+
+    @question.setter
+    def question(self, value):
+        self._question = value
+
+    @property
+    def answer(self):
+        return self._answer
+
+    @answer.setter
+    def answer(self, value):
+        self._answer = value
+
+    def table_name(self):
+        return "trivia_questions"
+
+    def to_tuple(self):
+        return self.question, self.answer

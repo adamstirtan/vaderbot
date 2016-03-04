@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 from slackclient import SlackClient
 from database.database_client import DatabaseClient
-from models import Message, Quote
+from models import Message, Quote, TriviaQuestion, User
 from commands.add_point import AddPointCommand
 from commands.add_quote import AddQuoteCommand
 from commands.aol_say import AolSayCommand
@@ -12,7 +12,8 @@ from commands.count import CountCommand
 from commands.quote import QuoteCommand
 from commands.scream import ScreamCommand
 from commands.take_point import TakePointCommand
-from commands.update import  UpdateCommand
+from commands.trivia import TriviaCommand
+from commands.update import UpdateCommand
 from commands.urban_dictionary import UrbanDictionaryCommand
 from commands.weather import WeatherCommand
 
@@ -34,6 +35,7 @@ class Vader:
             "!scream": ScreamCommand(),
             "!SCREAM": ScreamCommand(loud=True),
             "!takepoint": TakePointCommand(database.repository(Quote)),
+            "!trivia": TriviaCommand(database.repository(TriviaQuestion), database.repository(User)),
             "!ud": UrbanDictionaryCommand(),
             "!update": UpdateCommand(),
             "!weather": WeatherCommand()

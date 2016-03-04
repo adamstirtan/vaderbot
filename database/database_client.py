@@ -3,6 +3,7 @@ import zipfile
 
 from database.repositories.message_repository import MessageRepository
 from database.repositories.quote_repository import QuoteRepository
+from database.repositories.trivia_question_repository import TriviaQuestionRepository
 from database.repositories.user_repository import UserRepository
 
 
@@ -20,6 +21,8 @@ class DatabaseClient:
             return MessageRepository()
         elif cls.__name__ == "Quote":
             return QuoteRepository()
+        elif cls.__name__ == "TriviaQuestion":
+            return TriviaQuestionRepository()
         elif cls.__name__ == "User":
             return UserRepository()
 
