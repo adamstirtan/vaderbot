@@ -9,6 +9,7 @@ from commands.add_quote import AddQuoteCommand
 from commands.aol_say import AolSayCommand
 from commands.convert import ConvertCommand
 from commands.count import CountCommand
+from commands.lcbo import LcboCommand
 from commands.quote import QuoteCommand
 from commands.scream import ScreamCommand
 from commands.take_point import TakePointCommand
@@ -31,6 +32,7 @@ class Vader:
             "!aolsay": AolSayCommand(),
             "!convert": ConvertCommand(),
             "!count": CountCommand(database.repository(Message), database.repository(Quote)),
+            "!lcbo": LcboCommand(),
             "!quote": QuoteCommand(database.repository(Quote)),
             "!scream": ScreamCommand(),
             "!SCREAM": ScreamCommand(loud=True),
