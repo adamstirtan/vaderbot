@@ -26,9 +26,9 @@ class QuoteRepository(Repository):
     def update(self, entity):
         with self.open() as connection:
             cursor = connection.cursor()
-            query = "UPDATE quotes SET quote = '{}', points = {} WHERE id=?".format(entity.quote, entity.points)
+            query = "UPDATE quotes SET quote = ?, points = ? WHERE id=?"
 
-            cursor.execute(query, (entity.entity_id,))
+            cursor.execute(query, (entity.quote, entity.points, entity.entity_id))
             return entity
 
     def remove(self, entity):
