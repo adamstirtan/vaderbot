@@ -51,7 +51,7 @@ class Repository:
     def __where__(self, clause):
         with self.open() as connection:
             cursor = connection.cursor()
-            query = "SELECT * FROM [] WHERE {}".format(self.table_name(), clause)
+            query = "SELECT * FROM {} WHERE {}".format(self.table_name(), clause)
 
             return cursor.execute(query).fetchall()
 
@@ -61,6 +61,6 @@ class Repository:
 
     def __remove__(self, entity):
         with self.open() as connection:
-            query = "DELETE FROM {} WHERE id-?".format(self.table_name())
+            query = "DELETE FROM {} WHERE id=?".format(self.table_name())
 
             connection.execute(query, (entity.entity_id,))

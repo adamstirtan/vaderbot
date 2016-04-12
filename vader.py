@@ -2,6 +2,7 @@ import time
 
 from datetime import datetime
 from slackclient import SlackClient
+
 from database.database_client import DatabaseClient
 from models import Message, Quote, TriviaQuestion, User
 from commands.add_point import AddPointCommand
@@ -16,14 +17,16 @@ from commands.trivia import TriviaCommand
 from commands.update import UpdateCommand
 from commands.urban_dictionary import UrbanDictionaryCommand
 from commands.weather import WeatherCommand
+from commands.wordgraph import WordGraphCommand
 
 
+# noinspection PyBroadException
 class Vader:
 
     def __init__(self):
+        self._client = SlackClient("xoxb-16470487171-NEqcYbtwqYrDWeXktwbWVUho")
         database = DatabaseClient()
 
-        self._client = SlackClient("xoxb-16470487171-NEqcYbtwqYrDWeXktwbWVUho")
         self._message_repository = database.repository(Message)
         self._commands = {
             "!addpoint": AddPointCommand(database.repository(Quote)),
@@ -38,7 +41,8 @@ class Vader:
             "!trivia": TriviaCommand(database.repository(TriviaQuestion), database.repository(User)),
             "!ud": UrbanDictionaryCommand(),
             "!update": UpdateCommand(),
-            "!weather": WeatherCommand()
+            "!weather": WeatherCommand(),
+            "!wordgraph": WordGraphCommand(database.repository(Message))
         }
 
     def connect(self):
@@ -72,5 +76,5 @@ class Vader:
                         value.execute(channel, message.split()[1:])
                         break
 
-        except (KeyError, StopIteration):
+        except:
             pass
