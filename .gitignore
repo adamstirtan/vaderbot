@@ -16,3 +16,4 @@
 *.pyc
 
 database/bot.db
+apikey.txt

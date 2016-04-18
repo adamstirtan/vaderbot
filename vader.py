@@ -24,7 +24,7 @@ from commands.wordgraph import WordGraphCommand
 class Vader:
 
     def __init__(self):
-        self._client = SlackClient("xoxb-16470487171-NEqcYbtwqYrDWeXktwbWVUho")
+        self._client = SlackClient(open('apikey.txt').read())
         database = DatabaseClient()
 
         self._message_repository = database.repository(Message)
