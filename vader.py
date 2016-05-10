@@ -17,7 +17,6 @@ from commands.trivia import TriviaCommand
 from commands.update import UpdateCommand
 from commands.urban_dictionary import UrbanDictionaryCommand
 from commands.weather import WeatherCommand
-from commands.wordgraph import WordGraphCommand
 
 
 # noinspection PyBroadException
@@ -41,17 +40,25 @@ class Vader:
             "!trivia": TriviaCommand(database.repository(TriviaQuestion), database.repository(User)),
             "!ud": UrbanDictionaryCommand(),
             "!update": UpdateCommand(),
-            "!weather": WeatherCommand(),
-            "!wordgraph": WordGraphCommand(database.repository(Message))
+            "!weather": WeatherCommand()
         }
 
-    def connect(self):
-        self._client.rtm_connect()
+    def start(self):
+        self.connect()
 
         while True:
-            for event in self._client.rtm_read():
-                self.process_event(event)
-            time.sleep(1)
+            try:
+                for event in self._client.rtm_read():
+                    self.process_event(event)
+                time.sleep(1)
+            except:
+                self.connect()
+
+    def connect(self):
+        if self._client:
+            self._client = SlackClient(open('apikey.txt').read().strip())
+
+        self._client.rtm_connect()
 
     def process_event(self, event):
         try:
@@ -75,6 +82,5 @@ class Vader:
                     if command == key:
                         value.execute(channel, message.split()[1:])
                         break
-
         except:
             pass
