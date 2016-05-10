@@ -20,13 +20,13 @@ class QuoteCommand(Command):
         quote = self._quote_repository.random()
 
         if quote:
-            channel.send_message("#{} - {} points\n{}".format(quote.entity_id, quote.points, quote.quote))
+            channel.send_message("#{} - {} points\n```{}```".format(quote.entity_id, quote.points, quote.quote))
 
     def __id_quote__(self, channel, quote_id):
         quote = self._quote_repository.get(quote_id)
 
         if quote:
-            channel.send_message("#{} - {} points\n{}".format(quote.entity_id, quote.points, quote.quote))
+            channel.send_message("#{} - {} points\n```{}```".format(quote.entity_id, quote.points, quote.quote))
         else:
             channel.send_message("There is no quote with that number.")
 
@@ -42,6 +42,6 @@ class QuoteCommand(Command):
             quote = self._quote_repository.search("quote LIKE \'%{}%\'".format(query[1:-1]))
 
         if quote:
-            channel.send_message("#{} - {} points\n{}".format(quote.entity_id, quote.points, quote.quote))
+            channel.send_message("#{} - {} points\n```{}```".format(quote.entity_id, quote.points, quote.quote))
         else:
             channel.send_message("Couldn't find anything that matched {}".format(query))
