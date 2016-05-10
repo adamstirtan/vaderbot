@@ -5,7 +5,7 @@ from vader import Vader
 
 def main():
     bot = Vader()
-    bot.connect()
+    bot.start()
 
 if __name__ == "__main__":
     main()
