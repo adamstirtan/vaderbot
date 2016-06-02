@@ -18,12 +18,16 @@ class ScreamCommand(Command):
         return True
 
     def generate_output(self, parameters):
+        prefix = ""
         if len(parameters) > 0:
+            if len(parameters) > 1 and parameters[0].startswith("@"):
+                prefix = parameters[0] + " "
+                parameters = parameters[1:]
             output = "   ".join([self._scream(word) for word in parameters])
         else:
             output = self._scream(self.default_word)
 
-        return output.upper()
+        return prefix + output.upper()
 
     def execute(self, channel, parameters):
         if self.validate(parameters):
