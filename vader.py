@@ -51,7 +51,7 @@ class Vader:
                 for event in self._client.rtm_read():
                     self.process_event(event)
                 time.sleep(1)
-            except:
+            except Exception as e:
                 self.connect()
 
     def connect(self):
@@ -77,10 +77,24 @@ class Vader:
                     channel.send_message("Available commands: {}"
                                          .format(", ".join(sorted(self._commands.keys(), key=lambda x: x.lower()))))
                     return
-
+                message = self._check_users(message)
                 for key, value in self._commands.items():
                     if command == key:
                         value.execute(channel, message.split()[1:])
                         break
-        except:
-            pass
+        except Exception as e:
+            print(e)
+
+    def _check_users(self, parameters):
+        new_parameters = []
+        for param in parameters.split():
+            if param.startswith("<"):
+                maybe_user = param[2:-1]
+                for user in self._client.server.users:
+                    if user.id == maybe_user:
+                        new_parameters.append("@"+user.name)
+                        break
+            else:
+                new_parameters.append(param)
+        return " ".join(new_parameters)
+
