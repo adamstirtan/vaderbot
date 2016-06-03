@@ -1,12 +1,22 @@
 Checkout the repository in /usr/local/src/ and this
 script and service will work fine.
 
+vaderbot.sh - /usr/local/bin/vaderbot.sh
+- pulls from upstream
+- starts the bot
+
+If on a system using systemd:
+
 vaderbot.service - /etc/systemd/system/vaderbot.service
 - systemctl enable vaderbot.service (make it run at startup)
 - systemctl start vaderbot.service
 - systemctl restart vaderbot.service
 - systemct status vaderbot.service
 
-vaderbot.sh - /usr/local/bin/vaderbot.sh
-- pulls from upstream
-- starts the bot
+If on a system using upstart:
+
+vaderbot.conf - /etc/init/vaderbot.conf
+- start vaderbot
+- stop vaderbot
+- status vaderbot
+- restart vaderbot
