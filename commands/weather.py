@@ -1,7 +1,11 @@
 import requests
 import json
 
-from commands.command import Command
+try:
+    from commands.command import Command
+except ImportError:
+    from command import Command
+
 from math import trunc
 
 
@@ -11,7 +15,7 @@ class WeatherCommand(Command):
         Command.__init__(self)
 
         self._request_uri = "http://api.openweathermap.org/data/2.5/weather?q={}&appid={}"
-        self._api_key = "44db6a862fba0b067b1930da0d769e98"
+        self._api_key = open("weather_api_key").read().strip()
 
     def validate(self, parameters):
         if len(parameters) == 0:
@@ -42,3 +46,9 @@ class WeatherCommand(Command):
             weather = "I don't know!"
 
         channel.send_message(weather)
+
+if __name__ == "__main__":
+    from fakechannel import FakeChannel
+    channel = FakeChannel()
+    w = WeatherCommand()
+    w.execute(channel, ["Burlington"])
