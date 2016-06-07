@@ -1,5 +1,6 @@
 import requests
 import json
+import os
 
 try:
     from commands.command import Command
