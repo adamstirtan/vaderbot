@@ -69,7 +69,7 @@ class Vader:
                 channel = next(channel for channel in self._client.server.channels if channel.id == event["channel"])
                 user = next(user for user in self._client.server.users if user.id == event["user"])
 
-                if message[0] != "!" and user.name != "vader":
+                if message[0] != "!" and user.name != "spaderbot":
                     self._message_repository.add(Message(user.name, message, datetime.now()))
                     return
 
