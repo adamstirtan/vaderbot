@@ -15,7 +15,7 @@ class WeatherCommand(Command):
         Command.__init__(self)
 
         self._request_uri = "http://api.openweathermap.org/data/2.5/weather?q={}&appid={}"
-        self._api_key = open("weather_api_key").read().strip()
+        self._api_key = os.getenv("WEATHER_API_KEY")
 
     def validate(self, parameters):
         if len(parameters) == 0:

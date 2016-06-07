@@ -1,4 +1,5 @@
 import time
+import os
 
 from datetime import datetime
 from slackclient import SlackClient
@@ -24,7 +25,7 @@ from commands.weather import WeatherCommand
 class Vader:
 
     def __init__(self):
-        self._client = SlackClient(open('apikey.txt').read().strip())
+        self._client = SlackClient(os.getenv("SLACK_API_KEY"))
         database = DatabaseClient()
 
         self._message_repository = database.repository(Message)
