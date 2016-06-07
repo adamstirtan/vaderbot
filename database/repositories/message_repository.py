@@ -17,12 +17,12 @@ class MessageRepository(Repository):
         return self.__all__()
 
     def freq(self, word):
-        query = "SELECT COUNT(message) FROM messages WHERE message LIKE \"%{}%\"".format(word)
+        query = "SELECT message FROM messages WHERE message LIKE \"%{}%\"".format(word)
         with self.open() as connection:
             cursor = connection.cursor()
             cursor.execute(query)
-            n = cursor.fetchone()[0]
-        return n
+            n = cursor.fetchall()
+        return sum(s[0].count(word) for s in n)
 
     def get(self, entity_id):
         entity = self.__get__(entity_id)
