@@ -7,6 +7,7 @@ class FreqCommand(Command):
         Command.__init__(self)
 
         self._message_repository = message_repository
+        self.message = message
 
     def execute(self, channel, parameters):
         if len(parameters) != 1 and self.message is None:
