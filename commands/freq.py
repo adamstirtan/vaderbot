@@ -9,7 +9,7 @@ class FreqCommand(Command):
         self._message_repository = message_repository
 
     def execute(self, channel, parameters):
-        if len(parameters) != 1:
+        if len(parameters) != 1 and self.message is None:
             channel.send_message("Usage: !freq [word]")
             return
 
