@@ -36,6 +36,7 @@ class Vader:
             "!convert": ConvertCommand(),
             "!count": CountCommand(database.repository(Message), database.repository(Quote)),
             "!freq": FreqCommand(database.repository(Message)),
+            "!kenken": FreqCommand(database.repository(Message), "kenken"),
             "!quote": QuoteCommand(database.repository(Quote)),
             "!scream": ScreamCommand(),
             "!SCREAM": ScreamCommand(loud=True),
@@ -56,6 +57,9 @@ class Vader:
                 time.sleep(1)
             except Exception as e:
                 self.connect()
+
+    def _handle_event(self):
+        pass
 
     def connect(self):
         if self._client:
