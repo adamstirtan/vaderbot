@@ -19,6 +19,7 @@ from commands.trivia import TriviaCommand
 from commands.update import UpdateCommand
 from commands.urban_dictionary import UrbanDictionaryCommand
 from commands.weather import WeatherCommand
+from commands.wordfreq import WordFreqCommand
 
 
 # noinspection PyBroadException
@@ -44,7 +45,8 @@ class Vader:
             "!trivia": TriviaCommand(database.repository(TriviaQuestion), database.repository(User)),
             "!ud": UrbanDictionaryCommand(),
             "!update": UpdateCommand(),
-            "!weather": WeatherCommand()
+            "!weather": WeatherCommand(),
+            "!wordcloud": WordFreqCommand(self._client),
         }
 
     def start(self):
