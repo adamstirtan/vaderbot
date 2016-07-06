@@ -26,7 +26,8 @@ from commands.wordfreq import WordFreqCommand
 class Vader:
 
     def __init__(self):
-        self._client = SlackClient(os.getenv("SLACK_API_KEY"))
+        self._api_key = os.getenv("SLACK_API_KEY")
+        self._client = SlackClient(self._api_key)
         database = DatabaseClient()
 
         self._message_repository = database.repository(Message)
@@ -46,7 +47,7 @@ class Vader:
             "!ud": UrbanDictionaryCommand(),
             "!update": UpdateCommand(),
             "!weather": WeatherCommand(),
-            "!wordcloud": WordFreqCommand(self._client),
+            "!wordcloud": WordFreqCommand(self._client, self._api_key),
         }
 
     def start(self):
@@ -65,7 +66,7 @@ class Vader:
 
     def connect(self):
         if self._client:
-            self._client = SlackClient(open('apikey.txt').read().strip())
+            self._client = SlackClient(self._api_key)
 
         self._client.rtm_connect()
 
