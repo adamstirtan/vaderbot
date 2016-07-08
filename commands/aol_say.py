@@ -13,4 +13,4 @@ class AolSayCommand(Command):
             channel.send_message("Usage: !aolsay")
             return
 
-        channel.send_message(random.choice(list(open("commands/aolsay.txt"))))
+        channel.send_message(random.choice(list(open("commands/aolsay.txt", encoding="utf8"))))
