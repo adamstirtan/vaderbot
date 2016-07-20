@@ -11,6 +11,7 @@ from commands.add_quote import AddQuoteCommand
 from commands.aol_say import AolSayCommand
 from commands.convert import ConvertCommand
 from commands.count import CountCommand
+from commands.eight_ball import EightBallCommand
 from commands.freq import FreqCommand
 from commands.quote import QuoteCommand
 from commands.scream import ScreamCommand
@@ -32,6 +33,7 @@ class Vader:
 
         self._message_repository = database.repository(Message)
         self._commands = {
+            "!8ball": EightBallCommand(),
             "!addpoint": AddPointCommand(database.repository(Quote)),
             "!addquote": AddQuoteCommand(database.repository(Quote)),
             "!aolsay": AolSayCommand(),
@@ -57,8 +59,11 @@ class Vader:
             try:
                 for event in self._client.rtm_read():
                     self.process_event(event)
+                    print(event)
                 time.sleep(1)
             except Exception as e:
+                print("Something went wrong...reconnecting")
+                print(e)
                 self.connect()
 
     def _handle_event(self):

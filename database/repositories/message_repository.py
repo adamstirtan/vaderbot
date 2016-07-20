@@ -18,7 +18,7 @@ class MessageRepository(Repository):
 
     def freq(self, word):
         word = word.lower()
-        query = "SELECT message FROM messages WHERE message LIKE \"%{}%\"".format(word)
+        query = "SELECT message FROM messages WHERE message LIKE \"% {} %\" OR message LIKE \"%{} %\" OR message LIKE \"% {}%\"".format(word, word, word)
         with self.open() as connection:
             cursor = connection.cursor()
             cursor.execute(query)
