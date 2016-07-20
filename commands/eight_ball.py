@@ -31,4 +31,5 @@ class EightBallCommand(Command):
         if len(parameters) == 0:
             channel.send_message("Ask a question.")
             return
-        channel.send_message("{}: {}.".format(" ".join(parameters), random.choice(self.answers)))
+        separator = "" if parameters[-1].endswith("?") else "?"
+        channel.send_message("{}{} {}.".format(" ".join(parameters), separator, random.choice(self.answers)))
