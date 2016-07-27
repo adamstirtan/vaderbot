@@ -93,6 +93,9 @@ class Vader:
                                          .format(", ".join(sorted(self._commands.keys(), key=lambda x: x.lower()))))
                     return
                 message = self._check_users(message)
+                if command == "!update" and not user.name == "madl":
+                    channel.send_message("I'm sorry, {}. I'm afraid I can't do that.".format(user.name))
+                    return
                 for key, value in self._commands.items():
                     if command == key:
                         value.execute(channel, message.split()[1:])
