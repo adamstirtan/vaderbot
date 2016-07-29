@@ -94,8 +94,8 @@ class Vader:
                     return
                 message = self._check_users(message)
                 if command == "!update":
-                    channel.send_message("I'm sorry, {}. I'm afraid I can't do that.".format(user.name))
                     if not user.name == "madl":
+                        channel.send_message("Restarting myself! Wait for a bit.")
                         return
                 for key, value in self._commands.items():
                     if command == key:
