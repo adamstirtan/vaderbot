@@ -50,6 +50,8 @@ class Vader:
             "!update": UpdateCommand(),
             "!weather": WeatherCommand(),
             "!wordcloud": WordFreqCommand(self._client, self._api_key),
+            "!yellbarf": ScreamCommand(),
+            "!YELLBARF": ScreamCommand(loud=True),
         }
 
     def start(self):
