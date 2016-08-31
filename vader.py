@@ -100,7 +100,7 @@ class Vader:
                         channel.send_message("Restarting myself! Wait for a bit.")
                         return
                 for key, value in self._commands.items():
-                    if command == key:
+                    if command.startswith(key):
                         value.execute(channel, message.split()[1:])
                         break
         except Exception as e:
