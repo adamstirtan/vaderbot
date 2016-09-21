@@ -26,9 +26,9 @@ class GifCommand(Command):
 
     def execute(self, channel, parameters):
         if len(parameters) == 0:
-            return
-
-        query = "+".join(parameters)
+            query = ""
+        else:
+            query = "+".join(parameters)
 
         try:
             response = requests.get(self._request_uri.format(query, self._api_key))
@@ -46,4 +46,4 @@ if __name__ == "__main__":
     from fakechannel import FakeChannel
     channel = FakeChannel()
     g = GifCommand()
-    g.execute(channel, ["cat"])
+    g.execute(channel, [""])
