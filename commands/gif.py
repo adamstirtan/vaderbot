@@ -40,7 +40,6 @@ class GifCommand(Command):
         except Exception as e:
             gif = ""
 
-        channel.send_message(":bread: is a doodoo head")
         channel.send_message(gif)
 
 if __name__ == "__main__":
