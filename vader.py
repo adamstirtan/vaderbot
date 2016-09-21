@@ -13,6 +13,7 @@ from commands.convert import ConvertCommand
 from commands.count import CountCommand
 from commands.eight_ball import EightBallCommand
 from commands.freq import FreqCommand
+from commands.gif import GifCommand
 from commands.quote import QuoteCommand
 from commands.scream import ScreamCommand
 from commands.take_point import TakePointCommand
@@ -40,6 +41,7 @@ class Vader:
             "!convert": ConvertCommand(),
             "!count": CountCommand(database.repository(Message), database.repository(Quote)),
             "!freq": FreqCommand(database.repository(Message)),
+            "!gif": GifCommand(),
             "!kenken": FreqCommand(database.repository(Message), "kenken"),
             "!quote": QuoteCommand(database.repository(Quote)),
             "!scream": ScreamCommand(),
