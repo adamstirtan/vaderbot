@@ -36,10 +36,11 @@ class GifCommand(Command):
                 data = json.loads(response.text)
                 gif = data["data"]["url"]
             else:
-                data = "Woops!"
+                gif = ""
         except Exception as e:
-            data = "Woops!"
+            gif = ""
 
+        channel.send_message(":bread: is a doodoo head")
         channel.send_message(gif)
 
 if __name__ == "__main__":
