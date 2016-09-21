@@ -13,7 +13,7 @@ class GifCommand(Command):
 
     def __init__(self):
         Command.__init__(self)
-        self._request_uri = "http://api.giphy.com/v1/gifs/search?q={}&api_key={}"
+        self._request_uri = "http://api.giphy.com/v1/gifs/random?tag={}&api_key={}"
         self._api_key = "dc6zaTOxFJmzC"
 
     def validate(self, parameters):
@@ -34,18 +34,13 @@ class GifCommand(Command):
             response = requests.get(self._request_uri.format(query, self._api_key))
             if response.status_code == 200:
                 data = json.loads(response.text)
-                choices = []
-                for gif in data["data"]:
-                    if gif["type"] == "gif":
-                        choices.append(gif["url"])
-                        if len(choices) == 10:
-                            break
+                gif = data["data"]["url"]
             else:
-                data = "I don't know!"
+                data = "Woops!"
         except Exception as e:
-            data = "I don't know!"
+            data = "Woops!"
 
-        channel.send_message(random.choice(choices))
+        channel.send_message(gif)
 
 if __name__ == "__main__":
     from fakechannel import FakeChannel
