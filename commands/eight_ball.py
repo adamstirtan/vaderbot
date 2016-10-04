@@ -10,19 +10,23 @@ class EightBallCommand(Command):
         "You may rely on it",
         "As I see it, yes",
         "Most likely",
-        "Outlook good",
+        "There is a reasonable probability",
         "Yes",
         "Signs point to yes",
         "Reply hazy try again",
         "Ask again later",
-        "Better not tell you now",
+        "How dare you talk to me",
         "Cannot predict now",
         "Concentrate and ask again",
         "Don't count on it",
         "My reply is no",
         "My sources say no",
         "Outlook not so good",
-        "Very doubtful"
+        "Very doubtful",
+        ":soft_cock":,
+        ":hard_cock:",
+        "Zaboravi to",
+        "You are feg"
     ]
     def __init__(self):
         Command.__init__(self)
