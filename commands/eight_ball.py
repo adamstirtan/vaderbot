@@ -23,7 +23,7 @@ class EightBallCommand(Command):
         "My sources say no",
         "Outlook not so good",
         "Very doubtful",
-        ":soft_cock":,
+        ":soft_cock:",
         ":hard_cock:",
         "Zaboravi to",
         "You are feg"
