@@ -13,11 +13,8 @@ class EightBallCommand(Command):
         "There is a reasonable probability",
         "Yes",
         "Signs point to yes",
-        "Reply hazy try again",
         "Ask again later",
         "How dare you talk to me",
-        "Cannot predict now",
-        "Concentrate and ask again",
         "Don't count on it",
         "My reply is no",
         "My sources say no",
@@ -26,7 +23,8 @@ class EightBallCommand(Command):
         ":soft_cock:",
         ":hard_cock:",
         "Zaboravi to",
-        "You are feg"
+        "You are feg",
+        ":cat2:",
     ]
     def __init__(self):
         Command.__init__(self)
