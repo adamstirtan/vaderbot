@@ -1,3 +1,4 @@
+#test
 import time
 import os
 
@@ -28,7 +29,7 @@ from commands.wordfreq import WordFreqCommand
 class Vader:
 
     def __init__(self):
-        self._api_key = os.getenv("SLACK_API_KEY")
+        self._api_key = "xoxb-47744372737-riwH0zvGFhOEzhrZWXr6NAcD"
         self._client = SlackClient(self._api_key)
         database = DatabaseClient()
 
